@@ -48,6 +48,8 @@ def load_overall_analysis():
 
     st.pyplot(fig3)
 
+def load_startup_details(startup):
+    st.write('Hello')
 
 
 def load_investor_details(investor):
@@ -116,9 +118,10 @@ if option == 'Overall Analysis':
     load_overall_analysis()
 
 elif option == 'StartUp':
-    st.sidebar.selectbox('Select StartUp',sorted(df['startup'].unique().tolist()))
+    selected_startup = st.sidebar.selectbox('Select StartUp',sorted(df['startup'].unique().tolist()))
     btn1 = st.sidebar.button('Find StartUp Details')
-    st.title('StartUp Analysis')
+    if btn1:
+        load_startup_details()
 else:
     selected_investor = st.sidebar.selectbox('Select StartUp',sorted(set(df['investors'].str.split(',').sum())))
     btn2 = st.sidebar.button('Find Investor Details')
