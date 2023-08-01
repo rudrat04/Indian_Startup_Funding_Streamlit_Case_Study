@@ -49,7 +49,7 @@ def load_overall_analysis():
     st.pyplot(fig3)
 
 def load_startup_details(startup):
-    st.write('Hello')
+    st.title(startup)
 
 
 def load_investor_details(investor):
