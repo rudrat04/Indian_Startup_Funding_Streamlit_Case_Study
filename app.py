@@ -50,9 +50,52 @@ def load_overall_analysis():
 
 def load_startup_details(startup):
     st.title(startup)
-    last5_df = df[df['startup'].str.contains(startup)].head()[['date', 'investor', 'vertical', 'city', 'round', 'amount']]
+    last5_df = df[df['startup']==startup].head()[['date', 'investors', 'vertical', 'city', 'round', 'amount']]
     st.subheader('Most Recent Investments')
     st.dataframe(last5_df)
+
+    
+    col1,col2 = st.columns(2)
+    with col1:
+        # st.subheader('Total Amount invested')
+        total_amount_df = df[df['startup']==startup]['amount']
+        total_amount_invested = round(total_amount_df.sum(), ndigits=2)
+        st.metric('Total Amount invested', str(total_amount_invested) + ' Cr')
+
+    with col2:
+        list_of_investors = df[df['startup'] == startup]['investors'].reset_index().drop(columns=['index']).count()
+        st.metric('Total Investors Involved', str(list_of_investors[0]) + ' Investors')
+
+    col3,col4 = st.columns(2)
+    with col3:
+        startup_cities = df[df['startup'] == startup].groupby('startup')['city'].value_counts()
+        st.subheader('Startup Cities')
+        fig1, ax1 = plt.subplots()
+        ax1.pie(startup_cities,labels = startup_cities.index, autopct="%0.01f%%")
+
+        st.pyplot(fig1)
+
+    with col4:
+        #Lsit of Investors
+        list_of_investors = df[df['startup'] == startup]['investors'].reset_index().drop(columns=['index'])
+        st.subheader('List of Investors')
+        st.dataframe(list_of_investors)
+
+    col5, col6 = st.columns(2)
+    with col5:
+        vertical_series = df[df['startup'] == startup].groupby('startup')['vertical'].value_counts()
+        st.subheader('Vertical')
+        fig2, ax2 = plt.subplots()
+        ax2.pie(vertical_series,labels = vertical_series.index, autopct="%0.01f%%")
+        st.pyplot(fig2)
+
+    with col6:
+        round_series = df[df['startup'] == startup].groupby('startup')['round'].value_counts()
+        st.subheader('Round')
+        fig3, ax3 = plt.subplots()
+        ax3.pie(round_series,labels = round_series.index, autopct="%0.01f%%")
+        st.pyplot(fig3)
+
 
 
 def load_investor_details(investor):
