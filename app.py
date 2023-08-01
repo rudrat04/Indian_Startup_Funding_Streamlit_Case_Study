@@ -50,6 +50,9 @@ def load_overall_analysis():
 
 def load_startup_details(startup):
     st.title(startup)
+    last5_df = df[df['startup'].str.contains(startup)].head()[['date', 'investor', 'vertical', 'city', 'round', 'amount']]
+    st.subheader('Most Recent Investments')
+    st.dataframe(last5_df)
 
 
 def load_investor_details(investor):
